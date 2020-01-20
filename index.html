@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Weather App</title>
     <div class="headerbox">
@@ -13,7 +14,7 @@
     </div>
 </head>
 <body>
-    <div class="row bodyrow border">
+    <div class="row bodyrow">
         <div class="col-md-3 border searchColumn">
             <form id ="SearchBox">
                 <div id="searchHeader">Search for a City:
@@ -29,11 +30,51 @@
         <div class="col-md-9 border">
             <div class="row rowA border">
                 <div class="col-md-12 border">
-
+                    <div id ="cityRow"class="dataOutput">
+                    </div>
+                    <div id="tempRow"class="dataOutput">
+                    </div>
+                    <div id="humidityRow"class="dataOutput">
+                    </div>
+                    <div id="windRow"class="dataOutput">
+                    </div>
+                    <div id="uvRow"class="dataOutput">
+                    </div>
                 </div>
             </div>
             <div class="row rowB border">
-                <div class="col-md-12 border"></div>
+                <div class="col-md-12 border">
+                    <div id="forecast4" class="forecastbox">
+                        <div id="date4" class="dataOutput"></div>
+                        <div id="image4" class="dataOutput"></div>
+                        <div id="temp4" class="dataOutput"></div>
+                        <div id="humid4" class="dataOutput"></div>
+                    </div>
+                    <div id="forecast13" class="forecastbox">
+                            <div id="date12" class="dataOutput"></div>
+                            <div id="image12" class="dataOutput"></div>
+                            <div id="temp12" class="dataOutput"></div>
+                            <div id="humid12" class="dataOutput"></div>
+                    </div>
+                    <div id="forecast21" class="forecastbox">
+                            <div id="date20" class="dataOutput"></div>
+                            <div id="image20" class="dataOutput"></div>
+                            <div id="temp20" class="dataOutput"></div>
+                            <div id="humid20" class="dataOutput"></div>
+                    </div>
+                    <div id="forecast29" class="forecastbox">
+                            <div id="date28" class="dataOutput"></div>
+                            <div id="image28" class="dataOutput"></div>
+                            <div id="temp28" class="dataOutput"></div>
+                            <div id="humid28" class="dataOutput"></div>
+                    </div>
+                    <div id="forecast37" class="forecastbox">
+                            <div id="date36" class="dataOutput"></div>
+                            <div id="image36" class="dataOutput"></div>
+                            <div id="temp36" class="dataOutput"></div>
+                            <div id="humid36" class="dataOutput"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -41,12 +82,12 @@
         .headerbox{
             margin-top: 5px;
             text-align: center;
-            background: grey;
+            background: rgb(51,58,64);
         }
         .headertext{
            
             display: inline-block;
-            color: antiquewhite
+            color: #ffffff
         }
         .bodyrow{
             height: 150px;
@@ -55,7 +96,7 @@
             margin-top: 20px;
         }
         .searchColumn {
-            background-color: lightgrey;
+            background-color: rgb(248,249,250);
         }
         #submitBtn{
             color: whitesmoke;
@@ -64,18 +105,43 @@
 
         }
         .savedCity{
-            background-color: whitesmoke;
+            background-color: white;
             border: 1px solid darkgrey;
         }
         .savedCity:hover {
-        background-color: rgb(57, 99, 235);
+        background-color: rgb(0, 122, 255);
         }
         .savedCity:active{
         background-color: rgb(102, 37, 102);
         }
+        #cityRow{
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #uvRow{
+            display: inline-block;
+        }
+        .UVdisplay{
+            background-color: rgb(220,52,69);
+            display: inline-block;
+            padding: 5px;
+            border-radius: 10%;
+        }
+        .forecastbox{
+            display: inline-block;
+            margin:10px 5px 10px;
+            background-color: rgb(0, 122, 255);
+            color: white;
+            border-radius: 5%;
+            padding: 5px;
+        }
+        .forecastimg{
+            width:40%;
+        }
         </style>
         <script>
         var cities = [];
+        var currentDate = moment().format('l');
 
         // This function renders the cities that have been entered
         function renderCities() {
@@ -83,7 +149,7 @@
         if(cities == null) cities = [];
         else{
         cities.forEach(function(element){
-        $("#savedCities").append("<div class='savedCity' id="+ element+">"+element+"</div>");
+        $("#savedCities").prepend("<div class='savedCity' id="+ element+">"+element+"</div>");
         localStorage.setItem("Cities", JSON.stringify(cities));
         })}};
         // This function loads previously searched cities
@@ -98,9 +164,57 @@
             event.preventDefault();
             const newcity = $("#searchText").val().trim();
             cities.push(newcity);
-            console.log(newcity);
             renderCities();
-        })
+        });
+
+
+        // Calls the API to find city data when the city name is clicked
+        $(document).ready(function(){
+        $('.savedCity').click(function() {
+        $(".dataOutput").empty();
+        var searchCity = $(this).attr('id');
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" +searchCity+"&units=imperial&appid=af4b6cb437caa6db643b24a43b52989b";
+        $.ajax({
+            url: queryURL,
+            method:"GET"
+        }).then(function(response){
+            console.log(response);
+            
+            
+            $("#cityRow").append(response.name+ " ("+currentDate+ ") "+'<img src="http://openweathermap.org/img/wn/'+response.weather[0].icon+'@2x.png">');
+            $("#tempRow").append("Temperature: "+response.main.temp+"° F");
+            $("#humidityRow").append("Humidity: "+response.main.humidity+"%");
+            $("#windRow").append("Wind Speed: "+response.wind.speed+" MPH");
+            
+            var lat = response.coord.lat;
+            var long = response.coord.lon;
+            var uvqueryURL = "https://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+long+"&appid=af4b6cb437caa6db643b24a43b52989b"
+            $.ajax({
+                url: uvqueryURL,
+                method: "GET"
+            }).then(function(response){
+                $("#uvRow").append('UV: '+'<div class = "UVdisplay">'+response.value+'</div>');
+            });
+
+           
+            var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?q="+searchCity+"&units=imperial&appid=af4b6cb437caa6db643b24a43b52989b"
+            
+            $.ajax({
+                url: queryURL2,
+                method: "GET"
+            }).then(function(response){
+                console.log(searchCity);
+                var i;
+                    for (i = 4; i < 40; i+=8) {
+                        $("#date"+i).append(response.list[i].dt_txt.substring(0,10));
+                        $("#image"+i).append('<img class="forecastimg" src="http://openweathermap.org/img/wn/'+response.list[i].weather[0].icon+'@2x.png">')
+                        $("#temp"+i).append("Temp: "+response.list[i].main.temp+"° F");
+                        $("#humid"+i).append("Humidity "+response.list[i].main.humidity+"%");
+                    }
+            })
+        })})});
+
+
 
             
             </script>
