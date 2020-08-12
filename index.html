@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- HTML code for UI and Display -->
     <title>Weather App</title>
     <div class="headerbox">
         <h1 class="headertext">Weather Dashboard</h1>
     </div>
 </head>
 <body>
+    <!-- Search column -->
     <div class="row bodyrow">
         <div class="col-md-3 border searchColumn">
             <form id ="SearchBox">
@@ -23,11 +25,14 @@
                 <button type="submit" id="submitBtn"><i class="fa fa-search"></i>
                 </button>
         </form>
+        <!-- Saved Cities will populate in this div -->
             <div id="savedCities">
                 
             </div>
         </div>
+        <!-- Weather Results Display -->
         <div class="col-md-9 border">
+            <!-- Current Weather Display -->
             <div class="row rowA border">
                 <div class="col-md-12">
                     <div id ="cityRow"class="dataOutput">
@@ -42,6 +47,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Forecast Display -->
             <div class="row rowB">
                 <div class="col-md-12">
                     <div id="forecastheader" class="dataOutput">
@@ -80,6 +86,7 @@
             </div>
         </div>
     </div>
+    <!-- CSS Styling for HTML -->
     <style>
         .headerbox{
             margin-top: 5px;
@@ -149,19 +156,22 @@
             width:40%;
         }
         </style>
+        <!-- JS Code for data retrieval -->
         <script>
         var cities = [];
         var currentDate = moment().format('l');
 
         // This function renders the cities that have been entered
         function renderCities() {
-        $("#savedCities").empty();
-        if(cities == null) cities = [];
-        else{
-        cities.forEach(function(element){
-        $("#savedCities").prepend("<div class='savedCity' id="+ element+">"+element+"</div>");
-        localStorage.setItem("Cities", JSON.stringify(cities));
-        })}};
+            $("#savedCities").empty();
+            if(cities == null) cities = [];
+                else {
+                    cities.forEach(function(element){
+                        $("#savedCities").prepend("<div class='savedCity' id="+ element+">"+element+"</div>");
+                        localStorage.setItem("Cities", JSON.stringify(cities));
+                    })
+                }
+            };
         // This function loads cities stored in local storage
         $(document).ready(function() {
         cities = JSON.parse(localStorage.getItem("Cities"));
