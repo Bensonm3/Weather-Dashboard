@@ -22,4 +22,8 @@ A prompt will appear upon page load asking for permission to access the users lo
 	
 User then can add cities to the list on the right of the page using the input and submit
 buttons, which can then be clicked to retrieve the weather data and forecast.
+![alt text](http://url/to/img.png)
+
+Deployed URL:
+https://bensonm3.github.io/hw6/
 
