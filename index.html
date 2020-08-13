@@ -220,7 +220,7 @@
         $('#savedCities').on("click", ".savedCity", function() {
             $(".dataOutput").empty();
             var searchCity = $(this).text();
-            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" +searchCity+"&units=imperial&appid=af4b6cb437caa6db643b24a43b52989b";
+            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+searchCity+"&units=imperial&appid=af4b6cb437caa6db643b24a43b52989b";
             $.ajax({
                 url: queryURL,
                 method:"GET"
@@ -260,11 +260,7 @@
                     })
                 })  
             })
-        });
-
-
-
-            
+        });        
 </script>
 </body>
 </html>
