@@ -1,6 +1,5 @@
 #Weather Dashboard
 
-Weather API
 
 As a traveler
 I want to see the weather outlook for multiple cities
@@ -13,6 +12,19 @@ User can search for cities which are then saved to a list which can be accessed 
 reloading the page
 Upon selection of a city, current weather data is displayed, along with a 5 day forecast
 of weather data at 3PM local time.
+
+Technologies Used:
+<br/>
+Open Weather API
+<br/>
+jQuery
+<br/>
+Javascript
+<br/>
+HTML
+<br/>
+CSS
+<br/>
 
 
 Instructions:
