@@ -38,7 +38,6 @@ A prompt will appear upon page load asking for permission to access the users lo
 	<br/>
 	If this is allowed, local weather will load (this may take a moment)
 	<br/>
-	
 User then can add cities to the list on the right of the page using the input and submit
 buttons, which can then be clicked to retrieve the weather data and forecast.
 <br/>
