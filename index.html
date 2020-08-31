@@ -210,7 +210,6 @@
             }
             navigator.geolocation.getCurrentPosition(success, error);
             $("#cityRow").append("Loading...");
-            
             // Calls the API to find city data when the city name is clicked, and displays the current data on the page
         $('#savedCities').on("click", ".savedCity", function() {
             $(".dataOutput").empty();
